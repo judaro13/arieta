@@ -1,0 +1,60 @@
+{
+  "data_process": [
+    {
+      "name": "ingestor1",
+      "class": "connector",
+      "technology":"Kafka",
+      "properties": {
+        "topic":"CRMData",
+        "port":"9000",
+        "batch_size":"1000"
+      },
+      "source": "mongodb_1",
+      "destination":"model1",
+      "device_configuration": {
+        "memory":"4G",
+        "memory_limit":"4G",
+        "cpu":"100m",
+        "cpu_limit":"200m"
+      }
+    }
+  ],
+  "data_evaluation": [
+    {
+      "name": "treem",
+     	"Description":"",
+      "class": "BDA::model",
+      "PathFile":"M1.pmml",
+      "MLAlgorithm":"DecisionTree",
+      "technology":"SparkML",
+      "properties": {},
+      "Deployed":"device_2",
+      "device_configuration": {
+        "memory":"4G",
+        "memory_limit":"4G",
+        "cpu":"100m",
+        "cpu_limit":"200m"
+      }
+    }
+  ],
+  "databases": [
+    {
+      "name": "mongodb1",
+      "technology":"MongoDB",
+      "version": "latest",
+      "mode": "READ",
+      "properties": {
+        "port":"27017"
+      }
+    },
+    {
+      "name": "mongodb2",
+      "technology": "MongoDB",
+      "version": "latest",
+      "mode": "READ",
+      "properties": {
+        "port":"27017"
+      }
+    }
+  ]
+}
