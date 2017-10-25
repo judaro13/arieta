@@ -1,42 +1,89 @@
 module Apps
 
   class ClusterDeck < APIDeck
-    IMAGES ={"MongoDB" => "mongo", "PostgreSQL" => "postgres", "Kafka" => "cloudtrackinc/kubernetes-kafka"}
-    DBS_PORTS ={"MongoDB" => "27017", "PostgreSQL" => "5432"}
-
-    def create_dbs(data)
+    def process_services(data)
       return unless data
-      data.each do |db|
-        pod_name = db.name
-        image = IMAGES[db.technology]
-        port = db.properties.port || DBS_PORTS[db.technology]
-        version = db.version
-        Kubernetes.new.deploy(pod_name, image, port, version)
+      data.each do |dp|
+        pod_name = dp.name
+        image = dp.image
+        port = dp["properties"]["port"] ? dp.properties.port : "8080"
+        if dp["version"]
+          version =  dp["version"] ? dp.version : nil
+        end
+
+        if dp["device_configuration"]
+          Kubernetes.new.deploy_limited(pod_name, image, port , version, "", dp.device_configuration)
+        else
+          Kubernetes.new.deploy(pod_name, image, port)
+          #, nil, "NodePort")
+        end
       end
     end
   end
 
   Cluster = Syro.new(ClusterDeck) do
     post do
-      if req.params.keys.include?("devices")
-        data = JSON.parse File.read(req.params.devices.tempfile)
-        create_dbs(data.databases)
+      if req.params.keys.include?("services")
+        data = JSON.parse File.read(req.params.services.tempfile)
+        process_services(data)
+        res.text "done"
       else
-        res.text "missing cluster file parameters"
+        res.text "missing 'services' file parameters"
       end
     end
 
     get do
       res.text Kubernetes.new.info
     end
+
+
+    on "memory_use" do
+      get do
+        res.text Kubernetes.new.memory_use
+      end
+    end
+
+
+    on "services" do
+      get do
+        res.text Kubernetes.new.services
+      end
+    end
+
+    on "pods" do
+      get do
+        res.text Kubernetes.new.get_pods
+      end
+
+      on :pod_name do
+        delete do
+          out = Kubernetes.new.delete_service(inbox[:pod_name])
+          res.text out
+        end
+
+        get do
+          out = Kubernetes.new.pod_status(inbox[:pod_name])
+          res.text out
+        end
+
+        on "describe" do
+          get do
+            res.text Kubernetes.new.describe_pod(inbox[:pod_name])
+          end
+        end
+
+
+      end
+    end
+
+
   end
 end
 
-#
+# #
 # curl \
-# -F "pmml=nombre" \
-# -F "devices=@./test.json" \
-# localhost:3000/v1/dm-cluster/
+# -F "services=@./test.json" \
+# localhost:3001/v1/
 
 
 # curl \

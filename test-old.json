@@ -27,8 +27,16 @@
   },
   {
     "name": "treem",
-    "image": "jpmml/openscoring",
+   	"Description":"",
+    "class": "BDA::model",
+    "PathFile":"M1.pmml",
+    "MLAlgorithm":"DecisionTree",
+    "technology":"SparkML",
     "version": "latest",
+    "properties": {
+      "file_path": "/tmp/tree.pmml"
+    },
+    "Deployed":"device_2",
     "device_configuration": {
       "memory":"5Mi",
       "memory_limit":"5Mi",
@@ -38,7 +46,7 @@
   },
   {
     "name": "mongodb1",
-    "image": "mongo",
+    "technology":"MongoDB",
     "version": "latest",
     "mode": "READ",
     "properties": {
@@ -47,7 +55,7 @@
   },
   {
     "name": "mongodb2",
-    "image": "mongo",
+    "technology": "MongoDB",
     "version": "latest",
     "mode": "READ",
     "properties": {

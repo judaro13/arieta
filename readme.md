@@ -100,3 +100,20 @@ You need to expose it
 ```
   $ kubectl proxy --port=8080
 ```
+
+
+
+#Starting the Application
+
+You will need kafka to handle the messages, see start_services to start kafka and zookeeper
+
+```
+bin/zookeeper-server-start.sh config/zookeeper.properties
+bin/kafka-server-start.sh config/server.properties
+```
+
+```
+$ dotenv shotgun
+```
+
+be sure you have a .env file with the enviroments vars required

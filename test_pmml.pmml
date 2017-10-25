@@ -1,0 +1,13 @@
+<PMML>
+  <DataDictionary>
+    <DataField name="fixed_acidity" optype="continuous" dataType="double">
+      <Value value="?" property="missing"/>
+      <Interval closure="closure" leftMargin="3.8" rightMargin="15.9"/>
+    </DataField>
+  </DataDictionary>
+  <TreeModel>
+    <MiningSchema>
+      <MiningField name="fixed_acidity" invalidValueTreatment="returnInvalid" missingValueReplacement="7.215307" missingValueTreatment="asMean"/>
+    </MiningSchema>
+  </TreeModel>
+</PMML>

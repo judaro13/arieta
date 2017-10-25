@@ -17,8 +17,29 @@ module Apps
   Root = Syro.new(APIDeck) do
 
     on "v1" do
-      on ("dm-cluster") { run Cluster }
+       run Cluster
     end
 
   end
 end
+
+#
+# apiVersion: v1
+# clusters:
+# - cluster:
+#     certificate-authority: /path/to/ca.crt
+#     server: https://192.168.99.100:8443
+#   name: minikube
+# contexts:
+# - context:
+#     cluster: minikube
+#     user: minikube
+#   name: minikube
+# current-context: minikube
+# kind: Config
+# preferences: {}
+# users:
+# - name: minikube
+#   user:
+#     client-certificate: /path/to/apiserver.crt
+#     client-key: /path/to/apiserver.key

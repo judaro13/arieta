@@ -1,7 +1,7 @@
 #!/bin/bash
 echo -e "\e[92mstarting minikube..."
 echo -e "\e[39m"
-minikube start --vm-driver=xhyve
+# minikube start --vm-driver=xhyve
 
 # echo ""
 # echo -e "\e[92mexposing minikube..."
@@ -13,6 +13,7 @@ echo ""
 echo -e "\e[92mstarting zookeeper and kafka..."
 echo -e "\e[39m"
 cd kafka
+
 bin/zookeeper-server-start.sh config/zookeeper.properties  2>&1 > /tmp/zoo.log  &
 bin/kafka-server-start.sh config/server.properties 2>&1 > /tmp/kafka.log &
 
